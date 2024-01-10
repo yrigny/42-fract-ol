@@ -12,9 +12,11 @@ OBJ_DIR	= obj/
 
 INC_DIR	= ./inc
 
-LIB_DIR	= /usr/lib/x86_64-linux-gnu
+X11_DIR	= /usr/lib
 
-CFILES	= main.c
+X11_INC	= /usr/include
+
+CFILES	= 
 
 SRC		= $(addprefix $(SRC_DIR), $(CFILES))
 
@@ -22,7 +24,7 @@ OBJ		= $(SRC:.c=.o)
 
 NAME	= fractol
 
-LFLAGS 	= -L$(MLX_DIR) -lmlx -L$(LIB_DIR) -lXext -lX11 -lm -L$(FT_DIR) -lft
+LFLAGS 	= -L$(FT_DIR) -lft -L$(MLX_DIR) -lmlx_Linux -L$(X11_DIR) -lX11 lXext -lm
 
 libs:
 	make -C $(FT_DIR)
@@ -30,7 +32,7 @@ libs:
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol.h
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INC_DIR) -03 -c $< -o $@
+	$(CC) $(CFLAGS) -I$(X11_INC) -I$(MLX_DIR) -c $< -o $@
 
 $(NAME): libs $(OBJ)
 	$(CC) $(OBJ) -o $(NAME) $(LFLAGS)
