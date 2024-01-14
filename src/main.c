@@ -36,6 +36,8 @@ typedef struct	s_env {
 	void	*mlx_win;
 	t_img	img;
 	int		zoom;
+	int		px;
+	int		py;
 }			t_env;
 
 typedef struct 	s_pos {
@@ -60,10 +62,10 @@ void	mandel(t_pos *p, int zoom, int length, int height)
 	double	zy = 0.0;
 	double	zx_tmp;
 
-	p->cx = (double)p->px / (((length / 4.8) - 3.0) / sqrt(zoom));
-	p->cy = 1.35 - (double)p->py / ((height / 2.7) / sqrt(zoom));
+	p->cx = (double)p->px / ((length / 4.8) * sqrt(zoom)) - 2.4 / sqrt(zoom);
+	p->cy = 1.35 / sqrt(zoom) - (double)p->py / ((height / 2.7) * sqrt(zoom));
 	p->div = 0;
-	while (p->div < MAX_ITER)
+	while (p->div < MAX_ITER / sqrt(zoom))
 	{
 		zx_tmp = zx;
 		zx = zx * zx - zy * zy + p->cx;
@@ -131,17 +133,27 @@ int	key_event(int keysym, t_env *e)
 		free(e->mlx);
 		exit(1);
 	}
-	// printf("The %d key has been pressed\n", keysym);
+	else
+		printf("The %d key has been pressed\n", keysym);
 	return (0);
 }
 
-int	mouse_event(int button, int x, int y, t_env *e)
+int	mouse_scroll(int button, int x, int y, t_env *e)
 {
+	if (button)
+		printf("action %d at %d, %d\n", button, x, y);
 	if (button == 5)
 	{
 		e->zoom *= 4;
-		printf("zoom in\n");
+		printf("zoom in 4x\n");
 	}
+	if (button == 4 && e->zoom > 1)
+	{
+		e->zoom /= 4;
+		printf("zoom out 4x\n");
+	}
+	color_img(&e->img, e->zoom, 1920, 1080, GREEN);
+	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
 	return (0);
 }
 
@@ -166,11 +178,12 @@ int	main(void)
 	e.mlx_win = mlx_new_window(e.mlx, 1920, 1080, "Hello world!"); // malloc called
 	e.img.img = mlx_new_image(e.mlx, 1920, 1080);
 	e.img.addr = mlx_get_data_addr(e.img.img, &e.img.bits_per_pixel, &e.img.line_length, &e.img.endian);
-	e.zoom = 0;
+	e.zoom = 1;
 	color_img(&e.img, e.zoom, 1920, 1080, GREEN);
 	mlx_put_image_to_window(e.mlx, e.mlx_win, e.img.img, 0, 0);
 	mlx_hook(e.mlx_win, 17, 1L<<5, win_close, &e);
-	mlx_hook(e.mlx_win, 4, 1L<<2, mouse_event, &e);
+	mlx_hook(e.mlx_win, 4, 1L<<2, mouse_scroll, &e);
+//	mlx_hook(e.mlx_win, 6, 1L<<6, mouse_move, &e;)
 	mlx_hook(e.mlx_win, 2, 1L<<0, key_event, &e);
 	//mlx_key_hook(e.mlx_win, key_event, &e);
 	mlx_loop(e.mlx); // keeps the process alive
