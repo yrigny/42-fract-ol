@@ -14,7 +14,7 @@ X11_DIR	= /usr/lib
 
 X11_INC	= /usr/include
 
-CFILES	= main.c event.c
+CFILES	= main.c event.c fractol.c parser.c
 
 SRC		= $(addprefix $(SRC_DIR), $(CFILES))
 
@@ -39,6 +39,7 @@ libs:
 clean:
 	make clean -C $(FT_DIR)
 	make clean -C $(MLX_DIR)
+	rm $(OBJ)
 
 fclean: clean
 	make fclean -C $(FT_DIR)

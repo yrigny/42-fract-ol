@@ -42,56 +42,7 @@ int	adjust_i(int i, int zn)
 	return (mu);
 }
 
-void	mandel(t_pos *p, t_env e)
-{
-	double	zx;
-	double	zy;
-	double	zx_tmp;
-
-	zx = 0.0;
-	zy = 0.0;
-	// p->cx = (double)p->px / ((LENGTH / 4.8) * sqrt(zoom)) - 2.4 / sqrt(zoom);
-	// p->cy = 1.35 / sqrt(zoom) - (double)p->py / ((HEIGHT / 2.7) * sqrt(zoom));
-	p->cx = (double)p->px / (LENGTH / e.c_length) - 0.5 / e.zoom - e.offset_cx;
-	p->cy = (double)p->py / (HEIGHT / e.c_height) - e.offset_cy;
-	p->i = 0;
-	while (p->i < MAX_ITER * sqrt(e.zoom))
-	{
-		zx_tmp = zx;
-		zx = zx * zx - zy * zy + p->cx;
-		zy = 2.0 * zx_tmp * zy + p->cy;
-		if (zx * zx + zy * zy > 4.0)
-			break ;
-		p->i++;
-	}
-}
-
-void	julia(t_pos *p, t_env e)
-{
-	double 	zx;
-	double	zy;
-	double	zx_tmp;
-
-    p->cx = (double)p->px / (LENGTH / e.c_length) + e.offset_cx;
-	p->cy = (double)p->py / (HEIGHT / e.c_height) + e.offset_cy;
-    zx = p->cx;
-	zy = p->cy;
-	p->i = 0;
-	while (p->i < MAX_ITER * sqrt(e.zoom))
-	{
-		zx_tmp = zx;
-		zx = zx * zx - zy * zy - 0.4;
-		zy = 2.0 * zx_tmp * zy + 0.6;
-		if (zx * zx + zy * zy > 4.0)
-		{
-			p->shade = adjust_i(p->i, zx * zx + zy * zy);
-			break ;
-		}
-		p->i++;
-	}
-}
-
-void	color_img(t_img *img, t_env e, int color)
+void	color_img(t_img *img, t_env e)
 {
 	t_pos	p;
 	int		x;
@@ -105,14 +56,13 @@ void	color_img(t_img *img, t_env e, int color)
 		while (x <= LENGTH)
 		{
 			p.px = x - LENGTH / 2;
-			// mandel(&p, e);
-			julia(&p, e);
+			apply_fractol(&p, e);
 			if (x == 0 && y == 0)
                 printf("p(%d,%d) c(%f,%f) plan c=%f*%f\n", p.px, p.py, p.cx, p.cy, e.c_length, e.c_height);
-			if (p.i == MAX_ITER * sqrt(e.zoom))
+			if (p.i == e.precision * sqrt(e.zoom))
 				my_pixel_put(img, x, y, BLACK);
 			else
-				my_pixel_put(img, x, y, color / (2 * p.i + 2));
+				my_pixel_put(img, x, y, e.colorbase / (2 * p.i + 2));
 			x++;
 		}
 		y++;
@@ -120,12 +70,13 @@ void	color_img(t_img *img, t_env e, int color)
 	}
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_env	e;
 
+	which_pattern(ac, av, &e);
 	e_init(&e);
-	color_img(&e.img, e, RED);
+	color_img(&e.img, e);
 	mlx_put_image_to_window(e.mlx, e.mlx_win, e.img.img, 0, 0);
 	mlx_hook(e.mlx_win, 17, 1L << 5, win_close, &e);
 	mlx_hook(e.mlx_win, 4, 1L << 2, mouse_event, &e);
