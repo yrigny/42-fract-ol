@@ -17,8 +17,6 @@ typedef struct	s_env {
 	void	*mlx_win;
 	t_img	img;
 	double	zoom;
-	double	focus_cx;
-	double	focus_cy;
 	double	offset_cx;
 	double	offset_cy;
 	double	c_length;
@@ -40,9 +38,9 @@ typedef struct 	s_pos {
 #define WHITE 0x00FFFFFF
 #define BLACK 0x00000000
 
-#define LENGTH 1000
-#define HEIGHT 1000
-#define ZOOM 1.2
+#define LENGTH 900
+#define HEIGHT 600
+#define ZOOM 1.1
 
 void	my_pixel_put(t_img *img, int x, int y, int color)
 {
@@ -80,12 +78,10 @@ int	key_event(int keysym, t_env *e)
 void    e_init(t_env *e)
 {
     e->zoom = 1.0;
-    e->focus_cx = 0.0;
-    e->focus_cy = 0.0;
     e->offset_cx = 0.0;
     e->offset_cy = 0.0;
-    e->c_length = 4.0;
-    e->c_height = 4.0;
+    e->c_length = 4.8;
+    e->c_height = 3.2;
 }
 
 int	adjust_i(int i, int zn)
@@ -108,7 +104,7 @@ void    get_complex(t_pos *p, t_env e)
     zx = p->cx;
 	zy = p->cy;
 	p->i = 0;
-	while (p->i < MAX_ITER * log(e.zoom))
+	while (p->i < MAX_ITER * sqrt(e.zoom))
 	{
 		zx_tmp = zx;
 		zx = zx * zx - zy * zy - 0.4;
@@ -138,7 +134,7 @@ void	color_img(t_img *img, t_env e, int color)
             // if (x == 0 && y == 0)
             //     printf("%f %f \n", p.cx, p.cy);
 			//printf("p(%d, %d) c(%f, %f) i %d\n", p.px, p.py, p.cx, p.cy, p.i);
-			if (p.i == MAX_ITER * log(e.zoom))
+			if (p.i == MAX_ITER * sqrt(e.zoom))
 				my_pixel_put(img, x, y, BLACK);
 			else
 				my_pixel_put(img, x, y, color / (2 * p.i + 2));
