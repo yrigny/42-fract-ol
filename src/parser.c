@@ -15,9 +15,9 @@
 void    error_msg(char *error_arg)
 {
     ft_printf("Invalid option \"%s\"\n", error_arg);
-    ft_printf("- Julia set options: A      | B      | C\n");
+    ft_printf("- Julia set options: 1      | 2      | 3\n");
     ft_printf("- Precision options: Low    | Medium | High\n");
-    ft_printf("- Color options    : 1      | 2      | 3\n");
+    ft_printf("- Color options    : R      | G      | B\n");
     exit(1);
 }
     
@@ -25,11 +25,11 @@ void	more_options(int ac, char **av, int i, t_env *e)
 {
 	while (i <= ac - 1)
 	{
-		if (e->pattern == 2 && ft_strncmp(av[i], "A", 2) == 0)
+		if (e->pattern == 2 && ft_strncmp(av[i], "1", 2) == 0)
 			e->pattern = 3;
-		else if (e->pattern == 2 && ft_strncmp(av[i], "B", 2) == 0)
+		else if (e->pattern == 2 && ft_strncmp(av[i], "2", 2) == 0)
 			e->pattern = 4;
-		else if (e->pattern == 2 && ft_strncmp(av[i], "C", 2) == 0)
+		else if (e->pattern == 2 && ft_strncmp(av[i], "3", 2) == 0)
 			e->pattern = 5;
 		else if (e->precision == 0 && ft_strncmp(av[i], "Low", 4) == 0)
 			e->precision = 50;
@@ -37,11 +37,11 @@ void	more_options(int ac, char **av, int i, t_env *e)
 			e->precision = 100;
 		else if (e->precision == 0 && ft_strncmp(av[i], "High", 5) == 0)
 			e->precision = 200;
-		else if (e->colorbase == 0 && ft_strncmp(av[i], "1", 2) == 0)
+		else if (e->colorbase == 0 && ft_strncmp(av[i], "R", 2) == 0)
 			e->colorbase = RED;
-		else if (e->colorbase == 0 && ft_strncmp(av[i], "2", 2) == 0)
+		else if (e->colorbase == 0 && ft_strncmp(av[i], "G", 2) == 0)
 			e->colorbase = GREEN;
-		else if (e->colorbase == 0 && ft_strncmp(av[i], "3", 2) == 0)
+		else if (e->colorbase == 0 && ft_strncmp(av[i], "B", 2) == 0)
 			e->colorbase = BLUE;
 		else
             error_msg(av[i]);
@@ -58,6 +58,8 @@ void	which_pattern(int ac, char **av, t_env *e)
 		e->pattern = 1;
 	else if (ac >= 2 && ft_strncmp(av[1], "Julia", 6) == 0)
 		e->pattern = 2;
+	else if (ac >= 2 && ft_strncmp(av[1], "Bonus", 6) == 0)
+		e->pattern = 6;
 	else
 	{
 		ft_printf("Available fractals:\nMandelbrot\nJulia\n");
@@ -68,5 +70,5 @@ void	which_pattern(int ac, char **av, t_env *e)
 	if (e->pattern != 0 && e->precision == 0)
 		e->precision = 100;
 	if (e->pattern != 0 && e->colorbase == 0)
-		e->colorbase = RED;
+		e->colorbase = GREEN;
 }

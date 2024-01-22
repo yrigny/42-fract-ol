@@ -35,6 +35,8 @@ int	mouse_event(int button, int x, int y, t_env *e)
 {
 	if (button)
 		ft_printf("action %d at %d, %d\n", button, x, y);
+	if (button && (e->pattern == 1 || e->pattern == 6))
+		x -= 0.15 * LENGTH;
 	if (button == 5)
 	{
 		e->zoom *= (double)ZOOM;
@@ -53,7 +55,7 @@ int	mouse_event(int button, int x, int y, t_env *e)
 		e->offset_cy -= e->c_height * ((ZOOM - 1) / ZOOM) * (0.5 - (double)y / HEIGHT);
 		printf("zoom out %fx\n", 1 / ZOOM);
 	}
-	color_img(&e->img, *e, RED);
+	color_img(&e->img, *e);
 	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
 	return (0);
 }

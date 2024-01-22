@@ -22,34 +22,38 @@ void	e_init(t_env *e)
 	e->zoom = 1.0;
 	e->offset_cx = 0.0;
 	e->offset_cy = 0.0;
-	e->c_length = 4.8;
-	e->c_height = 3.2;
+	e->c_length = 4.0;
+	e->c_height = 4.0;
 }
 
 void	my_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
+	if (x == 0 && y == 0)
+		printf("color=%x\n", color);
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
-int	adjust_i(int i, int zn)
-{
-	float	mu;
+// int	adjust_i(int i, int zn)
+// {
+// 	float	mu;
 
-	mu = i + 1 - log(log(sqrt(zn))) / log(2);
-	return (mu);
-}
+// 	mu = i + 1 - log(log(sqrt(zn))) / log(2);
+// 	return (mu);
+// }
 
 void	color_img(t_img *img, t_env e)
 {
 	t_pos	p;
 	int		x;
 	int		y;
+	int		color;
 
 	x = 0;
 	y = 0;
+	color = get_color(e.colorbase, p.i);
 	while (y <= HEIGHT)
 	{
 		p.py = HEIGHT / 2 - y;
@@ -58,11 +62,11 @@ void	color_img(t_img *img, t_env e)
 			p.px = x - LENGTH / 2;
 			apply_fractol(&p, e);
 			if (x == 0 && y == 0)
-                printf("p(%d,%d) c(%f,%f) plan c=%f*%f\n", p.px, p.py, p.cx, p.cy, e.c_length, e.c_height);
-			if (p.i == e.precision * sqrt(e.zoom))
+                printf("p(%d,%d) c(%f,%f) plan c=%f*%f i=%d\n", p.px, p.py, p.cx, p.cy, e.c_length, e.c_height, p.i);
+			if (p.i == e.precision)
 				my_pixel_put(img, x, y, BLACK);
 			else
-				my_pixel_put(img, x, y, e.colorbase / (2 * p.i + 2));
+				my_pixel_put(img, x, y, color); // e.colorbase / (2 * p.i + 2)
 			x++;
 		}
 		y++;

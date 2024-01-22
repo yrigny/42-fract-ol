@@ -21,13 +21,13 @@
 # include <X11/keysym.h>
 
 # define LENGTH 900
-# define HEIGHT 600
+# define HEIGHT 900
 # define ZOOM 1.1
-# define RED 0x00FF0000
-# define GREEN 0x0000FF00
-# define BLUE 0x000000FF
-# define WHITE 0x00FFFFFF
-# define BLACK 0x00000000
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
+# define WHITE 0xFFFFFF
+# define BLACK 0x0
 # define JULIA_A_R -0.4
 # define JULIA_A_I 0.6
 # define JULIA_B_R 0.285
