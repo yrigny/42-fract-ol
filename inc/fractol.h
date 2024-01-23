@@ -44,9 +44,11 @@ typedef struct	s_img {
 }				t_img;
 
 typedef struct	s_env {
-	int		pattern;
-	int		precision;
-	int		colorbase;
+	unsigned int	pattern;
+	unsigned int	precision;
+	unsigned int	colorbase;
+	int		view_x;
+	int		view_y;
 	void	*mlx;
 	void	*mlx_win;
 	t_img	img;
@@ -58,12 +60,12 @@ typedef struct	s_env {
 }			t_env;
 
 typedef struct 	s_pos {
-	int	px;
-	int	py;
-	int	i;
+	int		px;
+	int		py;
+	unsigned int	i;
 	double	cx;
 	double	cy;
-	double	shade;
+	unsigned int	color;
 }		t_pos;
 
 /* parser */
@@ -72,20 +74,21 @@ void	more_options(int ac, char **av, int i, t_env *e);
 void	which_pattern(int ac, char **av, t_env *e);
 
 /* fractol */
-void    choose_julia(t_env e, double *c_real, double *c_imagine);
+void    choose_julia(t_env *e, double *c_real, double *c_imagine);
 void	julia(t_pos *p, t_env e);
 void	mandel(t_pos *p, t_env e);
+void	burning(t_pos *p, t_env e);
 void	apply_fractol(t_pos *p, t_env e);
 
 /* event */
 int		mouse_event(int button, int x, int y, t_env *e);
-int		key_event(int keysym, t_env *e);
+int		key_event(int key, t_env *e);
 int		win_close(t_env *e);
 
 /* utils */
-int		adjust_i(int i, int zn);
 void	my_pixel_put(t_img *img, int x, int y, int color);
 void    e_init(t_env *e);
+void	get_color(t_pos *p, t_env e);
 void	color_img(t_img *img, t_env e);
 
 #endif

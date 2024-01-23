@@ -19,6 +19,8 @@ void	e_init(t_env *e)
 	e->img.img = mlx_new_image(e->mlx, LENGTH, HEIGHT);
 	e->img.addr = mlx_get_data_addr(e->img.img, &e->img.bits_per_pixel,
 			&e->img.line_length, &e->img.endian);
+	e->view_x = 0;
+	e->view_y = 0;
 	e->zoom = 1.0;
 	e->offset_cx = 0.0;
 	e->offset_cy = 0.0;
@@ -30,43 +32,62 @@ void	my_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x == 0 && y == 0)
-		printf("color=%x\n", color);
+	// if (x == 0 && y == 0)
+	// 	printf("color=%x\n", color);
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
-// int	adjust_i(int i, int zn)
-// {
-// 	float	mu;
+void	get_color(t_pos *p, t_env e)
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
 
-// 	mu = i + 1 - log(log(sqrt(zn))) / log(2);
-// 	return (mu);
-// }
+	if (e.pattern == 5)
+		p->i *= 3;
+	if (e.colorbase == RED)
+	{
+		r = 256 - p->i;
+		g = 214 - p->i;
+		b = 10 + p->i;
+	}
+	// if (e.colorbase == GREEN)
+	// {
+	// 	g = 243 - (p->i / e.precision) * 176;
+	// 	r = 216 - (p->i / e.precision) * 189;
+	// 	b = 220 - (p->i / e.precision) * 170;
+	// }
+	if (e.colorbase == BLUE)
+	{
+		b = 255;
+		r = 256 - p->i;
+		g = 230 - p->i;
+	}
+	p->color = r * 65536 + g * 256 + b;
+	if (p->i == e.precision)
+		p->color = BLACK;
+}
 
 void	color_img(t_img *img, t_env e)
 {
 	t_pos	p;
 	int		x;
 	int		y;
-	int		color;
 
 	x = 0;
 	y = 0;
-	color = get_color(e.colorbase, p.i);
 	while (y <= HEIGHT)
 	{
-		p.py = HEIGHT / 2 - y;
+		p.py = HEIGHT / 2 - (y - e.view_y);
 		while (x <= LENGTH)
 		{
-			p.px = x - LENGTH / 2;
+			p.px = (x - e.view_x) - LENGTH / 2;
 			apply_fractol(&p, e);
-			if (x == 0 && y == 0)
-                printf("p(%d,%d) c(%f,%f) plan c=%f*%f i=%d\n", p.px, p.py, p.cx, p.cy, e.c_length, e.c_height, p.i);
-			if (p.i == e.precision)
-				my_pixel_put(img, x, y, BLACK);
-			else
-				my_pixel_put(img, x, y, color); // e.colorbase / (2 * p.i + 2)
+			get_color(&p, e);
+			// if (x == 0 && y == 0)
+            //     printf("p(%d,%d) c(%f,%f) plan c=%f*%f i=%d\n", p.px, p.py, p.cx, p.cy, e.c_length, e.c_height, p.i);
+			my_pixel_put(img, x, y, p.color); // e.colorbase / (2 * p.i + 2)
 			x++;
 		}
 		y++;

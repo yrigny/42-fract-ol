@@ -32,11 +32,11 @@ void	more_options(int ac, char **av, int i, t_env *e)
 		else if (e->pattern == 2 && ft_strncmp(av[i], "3", 2) == 0)
 			e->pattern = 5;
 		else if (e->precision == 0 && ft_strncmp(av[i], "Low", 4) == 0)
-			e->precision = 50;
+			e->precision = 20;
 		else if (e->precision == 0 && ft_strncmp(av[i], "Medium", 7) == 0)
-			e->precision = 100;
+			e->precision = 60;
 		else if (e->precision == 0 && ft_strncmp(av[i], "High", 5) == 0)
-			e->precision = 200;
+			e->precision = 100;
 		else if (e->colorbase == 0 && ft_strncmp(av[i], "R", 2) == 0)
 			e->colorbase = RED;
 		else if (e->colorbase == 0 && ft_strncmp(av[i], "G", 2) == 0)
@@ -68,7 +68,7 @@ void	which_pattern(int ac, char **av, t_env *e)
 	if (e->pattern != 0 && ac > 2)
 		more_options(ac, av, 2, e);
 	if (e->pattern != 0 && e->precision == 0)
-		e->precision = 100;
+		e->precision = 60;
 	if (e->pattern != 0 && e->colorbase == 0)
-		e->colorbase = GREEN;
+		e->colorbase = RED;
 }
