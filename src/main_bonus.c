@@ -10,7 +10,7 @@
 /*									      */
 /* ************************************************************************** */
 
-#include "../inc/fractol.h"
+#include "../inc/fractol_bonus.h"
 
 void	e_init(t_env *e)
 {
@@ -26,7 +26,10 @@ void	e_init(t_env *e)
 	e->offset_cx = 0.0;
 	e->offset_cy = 0.0;
 	e->c_length = 4.0;
-	e->c_height = 4.0;
+	e->c_height = (e->c_length / LENGTH) * HEIGHT;
+	e->dyno = -1;
+	e->c_real = 0;
+	e->c_imagine = 0;
 }
 
 void	rainbow_helper(t_rgb *color, int pos)
@@ -123,6 +126,7 @@ int	main(int ac, char **av)
 	color_img(&e.img, e);
 	mlx_put_image_to_window(e.mlx, e.mlx_win, e.img.img, 0, 0);
 	mlx_hook(e.mlx_win, 17, 1L << 5, win_close, &e);
+	mlx_hook(e.mlx_win, 6, 1L << 6, mouse_pos, &e);
 	mlx_hook(e.mlx_win, 4, 1L << 2, mouse_event, &e);
 	mlx_hook(e.mlx_win, 2, 1L << 0, key_event, &e);
 	mlx_loop(e.mlx);

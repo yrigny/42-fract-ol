@@ -10,7 +10,7 @@
 /*									      */
 /* ************************************************************************** */
 
-#include "../inc/fractol.h"
+#include "../inc/fractol_bonus.h"
 
 void	error_msg(char *error_arg)
 {
@@ -58,11 +58,11 @@ void	which_pattern(int ac, char **av, t_env *e)
 		e->pattern = 1;
 	else if (ac >= 2 && ft_strncmp(av[1], "Julia", 6) == 0)
 		e->pattern = 2;
-	else if (ac >= 2 && ft_strncmp(av[1], "Bonus", 6) == 0)
+	else if (ac >= 2 && ft_strncmp(av[1], "Ship", 5) == 0)
 		e->pattern = 6;
 	else
 	{
-		ft_printf("Available fractals:\nMandelbrot\nJulia\n");
+		ft_printf("Available fractals:\nMandelbrot\nJulia\nShip\n");
 		exit(1);
 	}
 	if (e->pattern != 0 && ac > 2)

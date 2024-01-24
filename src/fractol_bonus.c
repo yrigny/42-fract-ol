@@ -10,7 +10,7 @@
 /*									      */
 /* ************************************************************************** */
 
-#include "../inc/fractol.h"
+#include "../inc/fractol_bonus.h"
 
 void	mandel(t_pos *p, t_env e)
 {
@@ -54,6 +54,12 @@ void	choose_julia(t_env *e, double *c_real, double *c_imagine)
 		*c_real = JULIA_C_R;
 		*c_imagine = JULIA_C_I;
 		e->precision /= 2;
+	}
+	if (e->dyno == 1)
+	{
+		*c_real = e->c_real;
+		*c_imagine = e->c_imagine;
+		e->precision = 30;
 	}
 }
 

@@ -10,17 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
+#ifndef FRACTOL_BONUS_H
 
-# define FRACTOL_H
+# define FRACTOL_BONUS_H
 # include "../libft/libft.h"
 # include "../minilibx/mlx.h"
 # include <math.h>
 # include <stdlib.h>
 # include <X11/keysym.h>
 
-# define LENGTH 1000
-# define HEIGHT 1000
+# define LENGTH 900
+# define HEIGHT 900
 # define ZOOM 1.1
 # define JULIA_A_R -0.4
 # define JULIA_A_I 0.6
@@ -54,6 +54,9 @@ typedef struct s_env
 	double			offset_cy;
 	double			c_length;
 	double			c_height;
+	int				dyno;
+	double			c_real;
+	double			c_imagine;
 }	t_env;
 
 typedef struct s_pos
@@ -88,6 +91,7 @@ void	apply_fractol(t_pos *p, t_env e);
 /* event */
 void	offset_helper(int x, int y, int button, t_env *e);
 int		mouse_event(int button, int x, int y, t_env *e);
+int		mouse_pos(int x, int y, t_env *e);
 int		key_event(int key, t_env *e);
 int		win_close(t_env *e);
 

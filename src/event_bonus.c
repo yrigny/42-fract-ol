@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/fractol.h"
+#include "../inc/fractol_bonus.h"
 
 int	win_close(t_env *e)
 {
@@ -43,6 +43,8 @@ int	key_event(int key, t_env *e)
 		e->precision -= 10;
 	if (key == XK_KP_Enter)
 		e->rgb_range = (e->rgb_range + 16) % 256;
+	if (key == XK_KP_Multiply)
+		e->dyno *= -1;
 	color_img(&e->img, *e);
 	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
 	return (0);
@@ -88,5 +90,19 @@ int	mouse_event(int button, int x, int y, t_env *e)
 	}
 	color_img(&e->img, *e);
 	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
+	return (0);
+}
+
+int	mouse_pos(int x, int y, t_env *e)
+{
+	if (e->pattern < 2 || e->pattern > 5)
+		return (0);
+	if (x % 30 == 0)
+	{
+		e->c_real = ((double)x - LENGTH / 2) / (LENGTH / e->c_length);
+		e->c_imagine = (HEIGHT / 2 - (double)y) / (HEIGHT / e->c_height);
+		color_img(&e->img, *e);
+		mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
+	}
 	return (0);
 }
