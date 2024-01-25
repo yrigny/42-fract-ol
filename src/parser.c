@@ -15,9 +15,9 @@
 void	error_msg(char *error_arg)
 {
 	ft_printf("Invalid option \"%s\"\n", error_arg);
-	ft_printf("- Julia set options: 1	   | 2	    | 3\n");
+	ft_printf("- Julia set options: 1      | 2      | 3\n");
 	ft_printf("- Precision options: Low    | Medium | High\n");
-	ft_printf("- Color options	  : A	   | B	    | C\n");
+	ft_printf("- Color options    : A      | B      | C\n");
 	exit(1);
 }
 

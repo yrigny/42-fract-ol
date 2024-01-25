@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*									      */
 /*							  :::	   ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_bonus.c                                     :+:      :+:    :+:   */
 /*						      +:+ +:+	      +:+     */
 /*   By: yrigny <marvin@42.fr>			    +#+  +:+	   +#+	      */
 /*						  +#+#+#+#+#+	+#+	      */
 /*   Created: 2024/01/21 16:52:02 by yrigny	       #+#    #+#	      */
-/*   Updated: 2024/01/24 14:24:33 by yrigny           ###   ########.fr       */
+/*   Updated: 2024/01/25 11:08:44 by yrigny           ###   ########.fr       */
 /*									      */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	error_msg(char *error_arg)
 {
 	ft_printf("Invalid option \"%s\"\n", error_arg);
-	ft_printf("- Julia set options: 1	   | 2	    | 3\n");
+	ft_printf("- Julia set options: 1      | 2      | 3\n");
 	ft_printf("- Precision options: Low    | Medium | High\n");
-	ft_printf("- Color options	  : A	   | B	    | C\n");
+	ft_printf("- Color options    : A      | B      | C\n");
 	exit(1);
 }
 

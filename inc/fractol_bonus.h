@@ -99,6 +99,6 @@ int		win_close(t_env *e);
 void	e_init(t_env *e);
 void	rainbow_helper(t_rgb *color, int pos);
 void	get_color(t_pos *p, t_env e);
-void	color_img(t_img *img, t_env e);
+int		color_img(t_env *e);
 
 #endif

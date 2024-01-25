@@ -43,8 +43,6 @@ int	key_event(int key, t_env *e)
 		e->precision -= 10;
 	if (key == XK_KP_Enter)
 		e->rgb_range = (e->rgb_range + 16) % 256;
-	color_img(&e->img, *e);
-	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
 	return (0);
 }
 
@@ -86,7 +84,5 @@ int	mouse_event(int button, int x, int y, t_env *e)
 		e->c_height *= ZOOM;
 		offset_helper(x, y, button, e);
 	}
-	color_img(&e->img, *e);
-	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
 	return (0);
 }

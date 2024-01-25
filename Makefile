@@ -1,55 +1,55 @@
 CC		= cc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
-FT_DIR	= ./libft
+FT_DIR		= ./libft
 
-MLX_DIR	= minilibx
+MLX_DIR		= minilibx
 
-SRC_DIR	= src/
+SRC_DIR		= src/
 
-INC_DIR	= ./inc
+INC_DIR		= ./inc
 
-X11_DIR	= /usr/lib
+X11_DIR		= /usr/lib
 
-X11_INC	= /usr/include
+X11_INC		= /usr/include
 
-CFILES	= main.c event.c fractol.c parser.c
+CFILES		= main.c event.c fractol.c parser.c
 
 CFILES_B	= main_bonus.c event_bonus.c fractol_bonus.c parser_bonus.c
 
 SRC		= $(addprefix $(SRC_DIR), $(CFILES))
 
-SRC_B	= $(addprefix $(SRC_DIR), $(CFILES_B))
+SRC_B		= $(addprefix $(SRC_DIR), $(CFILES_B))
 
 OBJ		= $(SRC:.c=.o)
 
-OBJ_B	= $(SRC_B:.c=.o)
+OBJ_B		= $(SRC_B:.c=.o)
 
-NAME	= fractol
+NAME		= fractol
 
-NAME_B	= fractol_bonus
+NAME_B		= fractol_bonus
 
-LFLAGS 	= -L$(FT_DIR) -lft -L$(MLX_DIR) -lmlx_Linux -L$(X11_DIR) -lX11 -lXext -lm
+LFLAGS 		= -L$(FT_DIR) -lft -L$(MLX_DIR) -lmlx_Linux -L$(X11_DIR) -lX11 -lXext -lm
 
-$(NAME): libs $(OBJ)
-	$(CC) $(OBJ) -o $(NAME) $(LFLAGS)
+all: libs $(NAME)
 
-$(NAME_B): libs $(OBJ_B)
-	$(CC) $(OBJ_B) -o $(NAME_B) $(LFLAGS)
-
-all: $(NAME)
-
-bonus: $(NAME_B)
+bonus: libs $(NAME_B)
 
 libs:
 	make -C $(FT_DIR)
 	make -C $(MLX_DIR)
 
-$(SRC:.c=.o): $(SRC_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol.h
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) -o $(NAME) $(LFLAGS)
+
+$(NAME_B): $(OBJ_B)
+	$(CC) $(OBJ_B) -o $(NAME_B) $(LFLAGS)
+
+$(OBJ): $(SRC_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol.h
 	$(CC) $(CFLAGS) -I$(X11_INC) -I$(MLX_DIR) -c $< -o $@
 
-$(SRC_B:.c=.o): $(SRC_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol_bonus.h
+$(OBJ_B): $(SRC_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol_bonus.h
 	$(CC) $(CFLAGS) -I$(X11_INC) -I$(MLX_DIR) -c $< -o $@
 
 clean:
@@ -63,4 +63,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY : all bonus clean fclean re
+.PHONY : all libs bonus clean fclean re
