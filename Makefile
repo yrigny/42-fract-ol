@@ -32,18 +32,18 @@ NAME_B		= fractol_bonus
 
 LFLAGS 		= -L$(FT_DIR) -lft -L$(MLX_DIR) -lmlx_Linux -L$(X11_DIR) -lX11 -lXext -lm
 
-all: libs $(NAME)
+all: $(NAME)
 
-bonus: libs $(NAME_B)
-
-libs:
-	make -C $(FT_DIR)
-	make -C $(MLX_DIR)
+bonus: $(NAME_B)
 
 $(NAME): $(OBJ)
+	make -C $(FT_DIR)
+	make -C $(MLX_DIR)
 	$(CC) $(OBJ) -o $(NAME) $(LFLAGS)
 
 $(NAME_B): $(OBJ_B)
+	make -C $(FT_DIR)
+	make -C $(MLX_DIR)
 	$(CC) $(OBJ_B) -o $(NAME_B) $(LFLAGS)
 
 $(OBJ): $(SRC_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)/fractol.h
@@ -63,4 +63,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY : all libs bonus clean fclean re
+.PHONY : all bonus clean fclean re
