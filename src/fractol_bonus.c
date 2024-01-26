@@ -39,6 +39,12 @@ void	mandel(t_pos *p, t_env e)
 
 void	choose_julia(t_env *e, double *c_real, double *c_imagine)
 {
+	if (e->dyno != 0)
+	{
+		*c_real = e->c_real;
+		*c_imagine = e->c_imagine;
+		return ;
+	}
 	if (e->pattern == 2 || e->pattern == 3)
 	{
 		*c_real = JULIA_A_R;
@@ -54,11 +60,6 @@ void	choose_julia(t_env *e, double *c_real, double *c_imagine)
 		*c_real = JULIA_C_R;
 		*c_imagine = JULIA_C_I;
 		e->precision /= 2;
-	}
-	if (e->dyno == 1)
-	{
-		*c_real = e->c_real;
-		*c_imagine = e->c_imagine;
 	}
 }
 
@@ -121,4 +122,6 @@ void	apply_fractol(t_pos *p, t_env e)
 		p->px -= 0.15 * LENGTH;
 		burning(p, e);
 	}
+	if (e.pattern != 0)
+		get_color(p, e);
 }

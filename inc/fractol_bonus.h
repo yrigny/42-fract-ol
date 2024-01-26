@@ -57,6 +57,7 @@ typedef struct s_env
 	int				dyno;
 	double			c_real;
 	double			c_imagine;
+	int				render;
 }	t_env;
 
 typedef struct s_pos

@@ -116,4 +116,6 @@ void	apply_fractol(t_pos *p, t_env e)
 		p->px -= 0.15 * LENGTH;
 		burning(p, e);
 	}
+	if (e.pattern != 0)
+		get_color(p, e);
 }

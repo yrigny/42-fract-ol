@@ -43,6 +43,7 @@ int	key_event(int key, t_env *e)
 		e->precision -= 10;
 	if (key == XK_KP_Enter)
 		e->rgb_range = (e->rgb_range + 16) % 256;
+	e->render = 1;
 	return (0);
 }
 
@@ -84,5 +85,6 @@ int	mouse_event(int button, int x, int y, t_env *e)
 		e->c_height *= ZOOM;
 		offset_helper(x, y, button, e);
 	}
+	e->render = 1;
 	return (0);
 }

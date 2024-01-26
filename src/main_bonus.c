@@ -98,25 +98,25 @@ int	color_img(t_env *e)
 	int		y;
 	char	*dst;
 
-	x = 0;
-	y = 0;
-	while (y <= HEIGHT)
+	x = -1;
+	y = -1;
+	if (e->render == 0)
+		return (0);
+	while (++y <= HEIGHT)
 	{
 		p.py = HEIGHT / 2 - (y - e->view_y);
-		while (x <= LENGTH)
+		while (++x <= LENGTH)
 		{
 			p.px = (x - e->view_x) - LENGTH / 2;
 			apply_fractol(&p, *e);
-			get_color(&p, *e);
 			dst = e->img.addr + (y * e->img.line_length + x
 					* (e->img.bits_per_pixel / 8));
 			*(unsigned int *)dst = p.color;
-			x++;
 		}
-		y++;
 		x = 0;
 	}
 	mlx_put_image_to_window(e->mlx, e->mlx_win, e->img.img, 0, 0);
+	e->render = 0;
 	return (0);
 }
 
@@ -134,9 +134,10 @@ int	main(int ac, char **av)
 	e.offset_cy = 0.0;
 	e.c_length = 4.0;
 	e.c_height = (e.c_length / LENGTH) * HEIGHT;
-	e.dyno = -1;
+	e.dyno = 0;
 	e.c_real = 0;
 	e.c_imagine = 0;
+	e.render = 1;
 	mlx_loop_hook(e.mlx, color_img, &e);
 	mlx_hook(e.mlx_win, 17, 1L << 5, win_close, &e);
 	mlx_hook(e.mlx_win, 6, 1L << 6, mouse_pos, &e);

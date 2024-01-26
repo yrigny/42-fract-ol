@@ -44,7 +44,8 @@ int	key_event(int key, t_env *e)
 	if (key == XK_KP_Enter)
 		e->rgb_range = (e->rgb_range + 32) % 256;
 	if (key == XK_KP_Multiply)
-		e->dyno *= -1;
+		e->dyno = (e->dyno + 1) % 3;
+	e->render = 1;
 	return (0);
 }
 
@@ -52,17 +53,17 @@ void	offset_helper(int x, int y, int button, t_env *e)
 {
 	if (button == 5)
 	{
-		e->offset_cx += e->c_length * (ZOOM - 1)
-			* ((double)(x - e->view_x) / LENGTH - 0.5);
-		e->offset_cy += e->c_height * (ZOOM - 1)
-			* (0.5 - (double)(y - e->view_y) / HEIGHT);
+		e->offset_cx += e->c_length * (ZOOM - 1) * ((double)(x - e->view_x)
+				/ LENGTH - 0.5);
+		e->offset_cy += e->c_height * (ZOOM - 1) * (0.5 - (double)(y
+					- e->view_y) / HEIGHT);
 	}
 	if (button == 4)
 	{
-		e->offset_cx -= e->c_length * ((ZOOM - 1) / ZOOM)
-			* ((double)x / LENGTH - 0.5);
-		e->offset_cy -= e->c_height * ((ZOOM - 1) / ZOOM)
-			* (0.5 - (double)y / HEIGHT);
+		e->offset_cx -= e->c_length * ((ZOOM - 1) / ZOOM) * ((double)x / LENGTH
+				- 0.5);
+		e->offset_cy -= e->c_height * ((ZOOM - 1) / ZOOM) * (0.5 - (double)y
+				/ HEIGHT);
 	}
 }
 
@@ -86,6 +87,7 @@ int	mouse_event(int button, int x, int y, t_env *e)
 		e->c_height *= ZOOM;
 		offset_helper(x, y, button, e);
 	}
+	e->render = 1;
 	return (0);
 }
 
@@ -93,10 +95,11 @@ int	mouse_pos(int x, int y, t_env *e)
 {
 	if (e->pattern < 2 || e->pattern > 5)
 		return (0);
-	if (x % 30 == 0 || y % 30 == 0)
+	if (e->dyno == 1 && (x % 5 == 0 || y % 5 == 0))
 	{
 		e->c_real = ((double)x - LENGTH / 2) / (LENGTH / e->c_length);
 		e->c_imagine = (HEIGHT / 2 - (double)y) / (HEIGHT / e->c_height);
 	}
+	e->render = 1;
 	return (0);
 }

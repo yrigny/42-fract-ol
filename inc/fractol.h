@@ -54,6 +54,7 @@ typedef struct s_env
 	double			offset_cy;
 	double			c_length;
 	double			c_height;
+	int				render;
 }	t_env;
 
 typedef struct s_pos
